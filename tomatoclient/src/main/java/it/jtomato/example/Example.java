@@ -18,6 +18,9 @@ public class Example {
 	public static void main(String[] args) {
 		// Creating a JTomato instance, you need a valid API key.
 		JTomato jtomato = new JTomato("put your api key here");
+		
+		//setting the number of results per page. Default is 30.
+		jtomato.setPage_limit(10);
 
 		// Creating a list to store the result
 		List<Movie> movies = new ArrayList<Movie>();
