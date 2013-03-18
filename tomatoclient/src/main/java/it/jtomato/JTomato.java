@@ -92,7 +92,8 @@ public class JTomato {
 	 *            is null).
 	 * 
 	 * @param page
-	 *            The selected page of movie search results.
+	 *            The selected page of movie search results. Maximum vale is 25.
+	 *            A greater value is set to 25.
 	 * 
 	 * @return The total number of movies matching the query. This value
 	 *         combined to the page limit ({@link #setPage_limit(int)}) may be
@@ -109,6 +110,9 @@ public class JTomato {
 		HashMap<String, String> paramsMap = getParamsMap();
 		paramsMap.put("q", query);
 		paramsMap.put("page_limit", page_limit);
+		if (page > 25) {
+			page = 25;
+		}
 		paramsMap.put("page", String.valueOf(page));
 		int total = 0;
 
@@ -486,8 +490,8 @@ public class JTomato {
 	 * 
 	 * @param limit
 	 *            Limits the number of similar movies returned. The maximum
-	 *            value is 5, a request with a greater value is considered as
-	 *            if it were issued with a limit equal to 5. This parameter is
+	 *            value is 5, a request with a greater value is considered as if
+	 *            it were issued with a limit equal to 5. This parameter is
 	 *            optional, it can be set to a negative value or zero value if
 	 *            no limit is required.
 	 * 
@@ -565,7 +569,7 @@ public class JTomato {
 	 *            "dvd". "top_critic" shows all the Rotten Tomatoes designated
 	 *            top critics. "dvd" pulls the reviews given on the DVD of the
 	 *            movie. "all" as the name implies retrieves all reviews.
-	 *            
+	 * 
 	 * @param country
 	 *            Provides localized data for the selected country <a
 	 *            href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
@@ -621,7 +625,6 @@ public class JTomato {
 
 		URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
 		String response = httpClient.get(uri);
-
 		JsonParser parser = new JsonParser();
 		JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
 		JsonArray movies = jsonResponse.get("movies").getAsJsonArray();
