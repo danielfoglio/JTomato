@@ -16,7 +16,7 @@ import java.util.List;
 public class Example {
 
 	public static void main(String[] args) {
-		// Creating a JTomato instance, you need a vali API key.
+		// Creating a JTomato instance, you need a valid API key.
 		JTomato jtomato = new JTomato("put your api key here");
 
 		// Creating a list to store the result
