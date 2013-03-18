@@ -486,8 +486,8 @@ public class JTomato {
 	 * 
 	 * @param limit
 	 *            Limits the number of similar movies returned. The maximum
-	 *            value is 50, a request with a greater value is considered as
-	 *            if it were issued with a limit equal to 50 . This parameter is
+	 *            value is 5, a request with a greater value is considered as
+	 *            if it were issued with a limit equal to 5. This parameter is
 	 *            optional, it can be set to a negative value or zero value if
 	 *            no limit is required.
 	 * 
@@ -501,6 +501,9 @@ public class JTomato {
 	 */
 	public List<Movie> getSimilarMovies(Movie movie, String country, int limit) {
 		List<Movie> movies = new ArrayList<Movie>();
+		if (limit > 5) {
+			limit = 5;
+		}
 		try {
 			String path = urls.MOVIE_INFO + "/" + movie.id + "/similar.json";
 			movies = getNonPaginatedResults(path, limit, country);
