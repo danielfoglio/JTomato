@@ -21,7 +21,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * This is a testing class for the JTomato client class. 
+ * This is a testing class for the JTomato client class. This class do not
+ * require an Internet connection since it uses a mockup of RottenTomatoes API
  * 
  * @author <a href="mailto:tambug@gmail.com">Giordano Tamburrelli</a>
  * 
@@ -34,7 +35,7 @@ public class JTomatoTest {
 	private JTomato rottenClient;
 	private NetHttpClientMockUp httpClient = new NetHttpClientMockUp();
 	private final String propertyFile = "res/tomatoes.properties";
-	
+
 	@Before
 	public void setUp() throws Exception {
 		Properties prop = new Properties();
@@ -46,7 +47,7 @@ public class JTomatoTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
 	@Test
 	public void simpleSearchTest() {
 		httpClient.setResponse(JsonResult.jsonMovieSearch);
@@ -63,8 +64,7 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).rating.audienceScore, 90);
 		assertEquals(movies.get(0).releaseDate.theater, "2011-11-11");
 	}
-	
-	
+
 	@Test
 	public void emptySearchTest() {
 		httpClient.setResponse(JsonResult.jsonEmptyMovieSearch);
@@ -100,7 +100,7 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).abridgedCast.get(4).name, "Ralph Fiennes");
 		assertEquals(movies.get(0).abridgedCast.get(4).characters.get(0), "Lord Voldemort");
 	}
-	
+
 	@Test
 	public void getInThreathersMoviesTest() {
 		httpClient.setResponse(JsonResult.jsonTheathersMovies);
@@ -130,7 +130,7 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).abridgedCast.get(4).name, "Ralph Fiennes");
 		assertEquals(movies.get(0).abridgedCast.get(4).characters.get(0), "Lord Voldemort");
 	}
-	
+
 	@Test
 	public void getOpeningMoviesTest() {
 		httpClient.setResponse(JsonResult.jsonOpeningMovies);
@@ -161,7 +161,7 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).abridgedCast.get(4).characters.get(1), "Johann Schmidt/The Red Skull");
 		assertEquals(movies.get(0).abridgedCast.get(4).characters.get(2), "Red Skull");
 	}
-	
+
 	@Test
 	public void getUpcomingMoviesTest() {
 		httpClient.setResponse(JsonResult.jsonUpcomingMovies);
@@ -180,8 +180,7 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).abridgedCast.get(0).name, "Daniel Craig");
 		assertEquals(movies.get(0).abridgedCast.get(0).characters.get(0), "Zeke Jackson");
 	}
-	
-	
+
 	@Test
 	public void getTopRentalsMoviesTest() {
 		httpClient.setResponse(JsonResult.jsonTopRentalsMovies);
@@ -199,12 +198,12 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).releaseDate.theater, "2010-12-22");
 		assertEquals(movies.get(0).releaseDate.dvd, "2011-06-07");
 	}
-	
+
 	@Test
 	public void getSimilarMoviesTest() {
 		httpClient.setResponse(JsonResult.jsonMovieSimilar);
 		Movie movie = new Movie();
-		movie.id = "770687943"; 
+		movie.id = "770687943";
 		List<Movie> movies = rottenClient.getSimilarMovies(movie, null, 0);
 		assertEquals(movies.get(0).title, "Up");
 		assertEquals(movies.get(0).year, "2009");
@@ -218,15 +217,13 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).releaseDate.theater, "2009-05-29");
 		assertEquals(movies.get(0).releaseDate.dvd, "2009-11-10");
 	}
-	
+
 	@Test
 	public void getCurrentReleaseDvdsTest() {
 		fail();
-		
+
 	}
-	
-	
-	
+
 	@Test
 	public void getMovieCastTest() {
 		httpClient.setResponse(JsonResult.jsonMovieCast);

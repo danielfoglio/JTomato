@@ -19,8 +19,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+
 /**
- * This is a testing class for the JTomato client class. 
+ * This is a testing class for the JTomato client class. This class REQUIRE an
+ * internet connection since it actually invokes the Rotten Tomaatoes API
  * 
  * @author <a href="mailto:tambug@gmail.com">Giordano Tamburrelli</a>
  * 
@@ -32,7 +34,7 @@ public class JTomatoTestWithNetwork {
 
 	private JTomato rottenClient;
 	private final String propertyFile = "res/tomatoes.properties";
-	
+
 	@Before
 	public void setUp() throws Exception {
 		Properties prop = new Properties();
@@ -44,66 +46,64 @@ public class JTomatoTestWithNetwork {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
 	@Test
 	public void simpleSearchTest() {
 		List<Movie> movies = new ArrayList<Movie>();
 		int total = rottenClient.searchMovie("Con Air", movies, 1);
-		assertTrue(total>0);
-		assertTrue(movies.size()>0);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
 	}
-	
+
 	@Test
 	public void emptySearchTest() {
 		List<Movie> movies = new ArrayList<Movie>();
 		int total = rottenClient.searchMovie("aljhflsdhjfjadns", movies, 1);
-		assertTrue(total==0);
-		assertTrue(movies.size()==0);
+		assertTrue(total == 0);
+		assertTrue(movies.size() == 0);
 	}
-	
+
 	@Test
 	public void simimlarMovieTest() {
 		List<Movie> movies = new ArrayList<Movie>();
 		int total = rottenClient.searchMovie("Pulp Fiction", movies, 1);
 		movies = rottenClient.getSimilarMovies(movies.get(0), null, 3);
-		assertTrue(total>0);
-		assertTrue(movies.size()>0);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
 	}
 
 	@Test
 	public void boxOfficeTest() {
 		List<Movie> movies = rottenClient.getBoxOfficeMovies("us", 0);
-		assertTrue(movies.size()>0);
+		assertTrue(movies.size() > 0);
 	}
-	
-
 
 	@Test
 	public void getOpeningMoviesTest() {
 		List<Movie> movies = rottenClient.getOpeningMovies(null, 0);
-		assertTrue(movies.size()>0);
+		assertTrue(movies.size() > 0);
 	}
-	
+
 	@Test
 	public void getUpcomingMoviesTest() {
 		List<Movie> movies = new ArrayList<Movie>();
 		int total = rottenClient.getUpcomingMovies(movies, "us", 1);
-		assertTrue(total>0);
-		assertTrue(movies.size()>0);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
 	}
-	
+
 	@Test
 	public void getTopRentalsMoviesTest() {
 		List<Movie> movies = rottenClient.getTopRentalsMovies(null, 0);
-		assertTrue(movies.size()>0);
+		assertTrue(movies.size() > 0);
 	}
 
 	@Test
 	public void getSimilarMoviesTest() {
 		Movie movie = new Movie();
-		movie.id = "770687943"; 
+		movie.id = "770687943";
 		List<Movie> movies = rottenClient.getSimilarMovies(movie, null, 0);
-		assertTrue(movies.size()>0);
+		assertTrue(movies.size() > 0);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class JTomatoTestWithNetwork {
 		List<AbridgedCast> cast;
 		rottenClient.searchMovie("Con Air", movies, 1);
 		cast = rottenClient.getMovieCast(movies.get(0).id);
-		assertTrue(cast.size()>0);
+		assertTrue(cast.size() > 0);
 	}
 
 	@Test

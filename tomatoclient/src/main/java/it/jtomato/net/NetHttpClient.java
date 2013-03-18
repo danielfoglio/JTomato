@@ -14,6 +14,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 
+/**
+ * HTTP Client used by default
+ * 
+ * @author <a href="mailto:tambug@gmail.com">Giordano Tamburrelli</a>
+ * 
+ * @version 1.0
+ **/
 public class NetHttpClient implements NetHttpClientInterface{
 
 	private final String scheme = "http";

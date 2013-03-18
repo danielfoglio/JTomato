@@ -15,6 +15,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * This is a testing class for the default HTTP client
+ * 
+ * @author <a href="mailto:tambug@gmail.com">Giordano Tamburrelli</a>
+ * 
+ * @version 1.0
+ **/
 public class NetHttpClientTest {
 
 	private NetHttpClient client;
