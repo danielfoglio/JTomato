@@ -115,10 +115,8 @@ public class JTomato {
 		try {
 			URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, urls.SEARCH_MOVIES, paramsMap);
 			String response = httpClient.get(uri);
-			System.out.println(uri);
 			JsonParser parser = new JsonParser();
 			JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
-			System.out.println(jsonResponse);
 			JsonArray movies = jsonResponse.get("movies").getAsJsonArray();
 
 			total = jsonResponse.get("total").getAsInt();
