@@ -3,8 +3,10 @@ package it.jtomato.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import it.jtomato.JTomato;
+import it.jtomato.ReviewType;
 import it.jtomato.gson.AbridgedCast;
 import it.jtomato.gson.Movie;
+import it.jtomato.gson.Review;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -64,11 +66,10 @@ public class JTomatoTestWithNetwork {
 	}
 
 	@Test
-	public void simimlarMovieTest() {
+	public void getSimilarMovieTest() {
 		List<Movie> movies = new ArrayList<Movie>();
-		int total = rottenClient.searchMovie("Pulp Fiction", movies, 1);
+		rottenClient.searchMovie("Pulp Fiction", movies, 1);
 		movies = rottenClient.getSimilarMovies(movies.get(0), null, 3);
-		assertTrue(total > 0);
 		assertTrue(movies.size() > 0);
 	}
 
@@ -83,6 +84,16 @@ public class JTomatoTestWithNetwork {
 		List<Movie> movies = rottenClient.getOpeningMovies(null, 0);
 		assertTrue(movies.size() > 0);
 	}
+	
+
+	@Test
+	public void getInTheathersMoviesTest() {
+		List<Movie> movies = new ArrayList<Movie>();
+		int total = rottenClient.getInThreatersMovies(movies, null, 1);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
+	}
+	
 
 	@Test
 	public void getUpcomingMoviesTest() {
@@ -90,6 +101,40 @@ public class JTomatoTestWithNetwork {
 		int total = rottenClient.getUpcomingMovies(movies, "us", 1);
 		assertTrue(total > 0);
 		assertTrue(movies.size() > 0);
+	}
+	
+	@Test
+	public void getCurrentReleaseDvdsTest() {
+		List<Movie> movies = new ArrayList<Movie>();
+		int total = rottenClient.getCurrentReleaseDvds(movies, null, 1);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
+	}
+	
+	@Test
+	public void getNewReleaseDvdsTest() {
+		List<Movie> movies = new ArrayList<Movie>();
+		int total = rottenClient.getNewReleaseDvds(movies, null, 1);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
+	}
+	
+	@Test
+	public void getUpcomingDvdsTest() {
+		List<Movie> movies = new ArrayList<Movie>();
+		int total = rottenClient.getUpcomingDvds(movies, null, 1);
+		assertTrue(total > 0);
+		assertTrue(movies.size() > 0);
+	}
+	
+	@Test
+	public void getMovieReviewsTest() {
+		List<Review> reviews = new ArrayList<Review>();
+		List<Movie> movies = new ArrayList<Movie>();
+		rottenClient.searchMovie("Pulp Fiction", movies, 1);
+		int total = rottenClient.getMovieReviews(movies.get(0), reviews, ReviewType.ALL, 1, null);
+		assertTrue(total > 0);
+		assertTrue(reviews.size() > 0);
 	}
 
 	@Test

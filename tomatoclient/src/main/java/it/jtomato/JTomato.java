@@ -595,7 +595,8 @@ public class JTomato {
 			String response = httpClient.get(uri);
 			JsonParser parser = new JsonParser();
 			JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
-			JsonArray castArray = jsonResponse.getAsJsonArray("cast");
+			total = jsonResponse.get("total").getAsInt();
+			JsonArray castArray = jsonResponse.getAsJsonArray("reviews");
 			for (int i = 0; i < castArray.size(); i++) {
 				JsonObject castJson = castArray.get(i).getAsJsonObject();
 				Review review = gson.fromJson(castJson, Review.class);
