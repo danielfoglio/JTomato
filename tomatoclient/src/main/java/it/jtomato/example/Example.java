@@ -22,7 +22,7 @@ public class Example {
 		//setting the number of results per page. Default is 30.
 		jtomato.setPage_limit(10);
 
-		// Creating a list to store the result
+		// Creating a list to store the results
 		List<Movie> movies = new ArrayList<Movie>();
 
 		// Searching a movie, page 1
