@@ -26,11 +26,11 @@ public class Example {
 		int total = jtomato.searchMovie("spider man", movies, 1);
 		System.out.println("Found " + total + " results");
 		System.out.println("First result: " + movies.get(0));
-
+		
 		// Obtaining additional info
 		Movie movie = jtomato.getMovieAdditionalInfo(movies.get(0));
 		// Printing the movie genre
-		System.out.println(movie.genres.get(0));
+		System.out.println("Movie genre: "+movie.genres.get(0));
 
 		// Getting similar movies
 		List<Movie> similarMovies = jtomato.getSimilarMovies(movie, "us", 5);
