@@ -510,9 +510,23 @@ public class JTomato {
 		return movies;
 	}
 
-	public List<AbridgedCast> getMovieCast(String movieId) {
+	/**
+	 * Returns the complete movie cast for a movie.
+	 * 
+	 * @param movie
+	 *            A {@link Movie} object containing a valid movie id.
+	 * 
+	 * @return A {@link AbridgedCast} object containing the movie cast.
+	 * 
+	 * @see AbridgedCast
+	 * @see Movie
+	 * @see <a
+	 *      href="http://developer.rottentomatoes.com/docs/read/json/v10/Movie_Cast"
+	 *      target="_blank"> Rotten Tomatoes API Documentation: Movie Cast</a>
+	 */
+	public List<AbridgedCast> getMovieCast(Movie movie) {
 		List<AbridgedCast> result = new ArrayList<AbridgedCast>();
-		String path = urls.MOVIE_INFO + "/" + movieId + "/cast.json";
+		String path = urls.MOVIE_INFO + "/" + movie.id + "/cast.json";
 		HashMap<String, String> paramsMap = getParamsMap();
 		try {
 			URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
@@ -532,11 +546,50 @@ public class JTomato {
 		return result;
 	}
 
-	public int getMovieReviews(String movieId, List<Review> reviews, String reviewType, int page, String country) {
+	/**
+	 * Returns the reviews for a movie. Results are paginated if they go past
+	 * the specified page limit.
+	 * 
+	 * @param movie
+	 *            A {@link Movie} object containing a valid movie id.
+	 * 
+	 * @param result
+	 *            A List of {@link Review} objects. The reviews obtained
+	 *            invoking this method are appended to this list.
+	 * 
+	 * @param reviewType
+	 *            3 different review types are possible: "all", "top_critic" and
+	 *            "dvd". "top_critic" shows all the Rotten Tomatoes designated
+	 *            top critics. "dvd" pulls the reviews given on the DVD of the
+	 *            movie. "all" as the name implies retrieves all reviews.
+	 *            
+	 * @param country
+	 *            Provides localized data for the selected country <a
+	 *            href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+	 *            target="_blank"> (ISO 3166-1 alpha-2)</a> if available. If
+	 *            this parameter is null, the method returns US data.
+	 * 
+	 * @param page
+	 *            The selected page of upcoming movies.
+	 * 
+	 * @return The total number of reviews. This value combined to the page
+	 *         limit ({@link #setPage_limit(int)}) may be used to compute the
+	 *         number of pages that contains the total results.
+	 * 
+	 * @see Review
+	 * @see ReviewType
+	 * @see Movie
+	 * @see <a
+	 *      href="http://developer.rottentomatoes.com/docs/read/json/v10/Movie_Reviews"
+	 *      target="_blank"> Rotten Tomatoes API Documentation: Movie
+	 *      Reviews</a>
+	 */
+	public int getMovieReviews(Movie movie, List<Review> result, ReviewType reviewType, int page, String country) {
 		int total = 0;
-		String path = urls.MOVIE_INFO + "/" + movieId + "/reviews.json";
+		String path = urls.MOVIE_INFO + "/" + movie.id + "/reviews.json";
 		HashMap<String, String> paramsMap = getParamsMap();
 		paramsMap.put("page", String.valueOf(page));
+		paramsMap.put("review_type", reviewType.toString());
 		try {
 			URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
 			String response = httpClient.get(uri);
@@ -546,7 +599,7 @@ public class JTomato {
 			for (int i = 0; i < castArray.size(); i++) {
 				JsonObject castJson = castArray.get(i).getAsJsonObject();
 				Review review = gson.fromJson(castJson, Review.class);
-				reviews.add(review);
+				result.add(review);
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

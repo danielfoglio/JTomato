@@ -228,7 +228,9 @@ public class JTomatoTest {
 	public void getMovieCastTest() {
 		httpClient.setResponse(JsonResult.jsonMovieCast);
 		List<AbridgedCast> cast;
-		cast = rottenClient.getMovieCast("1");
+		Movie movie = new Movie();
+		movie.id = "1";
+		cast = rottenClient.getMovieCast(movie);
 		assertEquals(cast.size(), 35);
 		assertEquals(cast.get(0).id, "162655641");
 		assertEquals(cast.get(0).name, "Tom Hanks");

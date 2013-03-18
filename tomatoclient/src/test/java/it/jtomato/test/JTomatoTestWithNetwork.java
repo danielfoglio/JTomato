@@ -111,7 +111,7 @@ public class JTomatoTestWithNetwork {
 		List<Movie> movies = new ArrayList<Movie>();
 		List<AbridgedCast> cast;
 		rottenClient.searchMovie("Con Air", movies, 1);
-		cast = rottenClient.getMovieCast(movies.get(0).id);
+		cast = rottenClient.getMovieCast(movies.get(0));
 		assertTrue(cast.size() > 0);
 	}
 
