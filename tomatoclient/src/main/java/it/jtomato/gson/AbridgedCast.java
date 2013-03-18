@@ -4,6 +4,13 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * GSON class representing the movie cast
+ * 
+ * @author <a href="mailto:tambug@gmail.com">Giordano Tamburrelli</a>
+ * 
+ * @version 1.0
+ **/
 public class AbridgedCast {
 	
 	@SerializedName("id")
