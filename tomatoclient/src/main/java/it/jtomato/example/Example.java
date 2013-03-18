@@ -18,7 +18,7 @@ public class Example {
 	
 	public static void main(String[] args) {
 		//Creating a JTomato instance, you need a vali API key.
-		JTomato jtomato = new JTomato("5cb467m9cke8c2smzrtqpebb");
+		JTomato jtomato = new JTomato("put your key here");
 		
 		//Creating a list to store the result
 		List<Movie> movies = new ArrayList<Movie>();
