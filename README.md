@@ -11,12 +11,12 @@ Rotten Tomatoes API Java Client
 
 -For Android developers:
 
-1.Export the JTomato project as a jar package
+  1.Export the JTomato project as a jar package
 
-2.Add in your libs folder of your Android project: the jar of JTomato and the gson-2.2.3.jar ( http://tinyurl.com/brchw84 )
+  2.Add in your libs folder of your Android project: the jar of JTomato and the gson-2.2.3.jar ( http://tinyurl.com/brchw84 )
 
-3.Put the INTERNET permission in your manifest
+  3.Put the INTERNET permission in your manifest
 
-4.Use JTomato asynchrounously w.r.t. to the UI thread (e.g., asynctask).
+  4.Use JTomato asynchrounously w.r.t. to the UI thread (e.g., asynctask).
 
 
