@@ -25,6 +25,7 @@ import org.apache.http.util.EntityUtils;
 public class NetHttpClient implements NetHttpClientInterface {
 
 	private final String ENCODING = "utf-8";
+	private final String SCHEMA = "http://";
 	private final String agent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
 
 	public String get(String uri) {
@@ -56,7 +57,6 @@ public class NetHttpClient implements NetHttpClientInterface {
 			String paramString = URLEncodedUtils.format(httpParams, this.ENCODING);
 			url += "?" + paramString;
 		}
-		System.out.println(url);
-		return "http://" + url;
+		return this.SCHEMA + url;
 	}
 }
