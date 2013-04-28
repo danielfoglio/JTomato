@@ -42,7 +42,7 @@ public class NetHttpClientTest {
 	@Test
 	public void testBuildSimpleURI() {
 		String url = client.buildUrl("www.google.it", null);
-		assertEquals(url.toString(), "www.google.it");
+		assertEquals(url.toString(), "http://www.google.it");
 	}
 
 	@Test
@@ -51,6 +51,6 @@ public class NetHttpClientTest {
 		paramsMap.put("apikey", "abc");
 		paramsMap.put("q", "scuola di polizia");
 		String url = client.buildUrl("www.google.it", paramsMap);
-		assertEquals(url, "www.google.it?q=scuola+di+polizia&apikey=abc");
+		assertEquals(url, "http://www.google.it?q=scuola+di+polizia&apikey=abc");
 	}
 }
