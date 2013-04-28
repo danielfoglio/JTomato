@@ -1,7 +1,5 @@
 package it.jtomato.net;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 /**
@@ -13,7 +11,7 @@ import java.util.HashMap;
  **/
 public interface NetHttpClientInterface {
 
-	public URI buildURI(String scheme, String host, String path, HashMap<String, String> params) throws URISyntaxException;
+	public String buildUrl(String url, HashMap<String, String> params);
 
-	public String get(URI uri);
+	public String get(String url);
 }

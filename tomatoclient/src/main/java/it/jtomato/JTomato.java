@@ -6,7 +6,6 @@ import it.jtomato.gson.Review;
 import it.jtomato.net.NetHttpClient;
 import it.jtomato.net.NetHttpClientInterface;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,24 +115,21 @@ public class JTomato {
 		paramsMap.put("page", String.valueOf(page));
 		int total = 0;
 
-		try {
-			URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, urls.SEARCH_MOVIES, paramsMap);
-			String response = httpClient.get(uri);
-			JsonParser parser = new JsonParser();
-			JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
-			JsonArray movies = jsonResponse.get("movies").getAsJsonArray();
+		String urlPath = urls.ROTTENTOMATOES_API + urls.SEARCH_MOVIES;
+		String url = httpClient.buildUrl(urlPath, paramsMap);
+		String response = httpClient.get(url);
+		JsonParser parser = new JsonParser();
+		JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
+		JsonArray movies = jsonResponse.get("movies").getAsJsonArray();
 
-			total = jsonResponse.get("total").getAsInt();
-			for (int i = 0; i < movies.size(); i++) {
-				JsonObject movieJson = movies.get(i).getAsJsonObject();
+		total = jsonResponse.get("total").getAsInt();
+		for (int i = 0; i < movies.size(); i++) {
+			JsonObject movieJson = movies.get(i).getAsJsonObject();
 
-				Movie movie = parseMovieJson(movieJson);
-				if (movie != null) {
-					result.add(movie);
-				}
+			Movie movie = parseMovieJson(movieJson);
+			if (movie != null) {
+				result.add(movie);
 			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
 		}
 
 		return total;
@@ -449,25 +445,21 @@ public class JTomato {
 	 */
 	public Movie getMovieAdditionalInfo(Movie movie) {
 		Movie movieResult = null;
-		URI uri = null;
+		String url = null;
 
-		try {
-			if (movie.id != null) {
-				// Build URI from movie ID
-				String path = urls.MOVIE_INFO + "/" + movie.id + ".json";
-				HashMap<String, String> paramsMap = getParamsMap();
-				uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
-			} else if (movie.links.self != null) {
-				// Otherwise build URI from movie self-link
-				uri = new URI(movie.links.self);
-			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		if (movie.id != null) {
+			// Build URI from movie ID
+			String path = urls.ROTTENTOMATOES_API + urls.MOVIE_INFO + "/" + movie.id + ".json";
+			HashMap<String, String> paramsMap = getParamsMap();
+			url = httpClient.buildUrl(path, paramsMap);
+		} else if (movie.links.self != null) {
+			// Otherwise build URI from movie self-link
+			url = movie.links.self;
 		}
 
-		if (uri != null) {
+		if (url != null) {
 			// I have a URI let's submit the request
-			String response = httpClient.get(uri);
+			String response = httpClient.get(url);
 			JsonParser parser = new JsonParser();
 			JsonObject movieJson = parser.parse(response).getAsJsonObject();
 			movieResult = parseMovieJson(movieJson);
@@ -533,21 +525,17 @@ public class JTomato {
 	 */
 	public List<AbridgedCast> getMovieCast(Movie movie) {
 		List<AbridgedCast> result = new ArrayList<AbridgedCast>();
-		String path = urls.MOVIE_INFO + "/" + movie.id + "/cast.json";
+		String path = urls.ROTTENTOMATOES_API + urls.MOVIE_INFO + "/" + movie.id + "/cast.json";
 		HashMap<String, String> paramsMap = getParamsMap();
-		try {
-			URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
-			String response = httpClient.get(uri);
-			JsonParser parser = new JsonParser();
-			JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
-			JsonArray castArray = jsonResponse.getAsJsonArray("cast");
-			for (int i = 0; i < castArray.size(); i++) {
-				JsonObject castJson = castArray.get(i).getAsJsonObject();
-				AbridgedCast cast = gson.fromJson(castJson, AbridgedCast.class);
-				result.add(cast);
-			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		String uri = httpClient.buildUrl(path, paramsMap);
+		String response = httpClient.get(uri);
+		JsonParser parser = new JsonParser();
+		JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
+		JsonArray castArray = jsonResponse.getAsJsonArray("cast");
+		for (int i = 0; i < castArray.size(); i++) {
+			JsonObject castJson = castArray.get(i).getAsJsonObject();
+			AbridgedCast cast = gson.fromJson(castJson, AbridgedCast.class);
+			result.add(cast);
 		}
 
 		return result;
@@ -593,24 +581,20 @@ public class JTomato {
 	 */
 	public int getMovieReviews(Movie movie, List<Review> result, ReviewType reviewType, int page, String country) {
 		int total = 0;
-		String path = urls.MOVIE_INFO + "/" + movie.id + "/reviews.json";
+		String path = urls.ROTTENTOMATOES_API + urls.MOVIE_INFO + "/" + movie.id + "/reviews.json";
 		HashMap<String, String> paramsMap = getParamsMap();
 		paramsMap.put("page", String.valueOf(page));
 		paramsMap.put("review_type", reviewType.toString());
-		try {
-			URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
-			String response = httpClient.get(uri);
-			JsonParser parser = new JsonParser();
-			JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
-			total = jsonResponse.get("total").getAsInt();
-			JsonArray castArray = jsonResponse.getAsJsonArray("reviews");
-			for (int i = 0; i < castArray.size(); i++) {
-				JsonObject castJson = castArray.get(i).getAsJsonObject();
-				Review review = gson.fromJson(castJson, Review.class);
-				result.add(review);
-			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		String url = httpClient.buildUrl(path, paramsMap);
+		String response = httpClient.get(url);
+		JsonParser parser = new JsonParser();
+		JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
+		total = jsonResponse.get("total").getAsInt();
+		JsonArray castArray = jsonResponse.getAsJsonArray("reviews");
+		for (int i = 0; i < castArray.size(); i++) {
+			JsonObject castJson = castArray.get(i).getAsJsonObject();
+			Review review = gson.fromJson(castJson, Review.class);
+			result.add(review);
 		}
 		return total;
 	}
@@ -623,8 +607,8 @@ public class JTomato {
 		paramsMap.put("page", String.valueOf(page));
 		int total = 0;
 
-		URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
-		String response = httpClient.get(uri);
+		String url = httpClient.buildUrl(urls.ROTTENTOMATOES_API + path, paramsMap);
+		String response = httpClient.get(url);
 		JsonParser parser = new JsonParser();
 		JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
 		JsonArray movies = jsonResponse.get("movies").getAsJsonArray();
@@ -653,8 +637,8 @@ public class JTomato {
 			paramsMap.put("country", country);
 		}
 		List<Movie> result = new ArrayList<Movie>();
-		URI uri = httpClient.buildURI(null, urls.ROTTENTOMATOES_API, path, paramsMap);
-		String response = httpClient.get(uri);
+		String url = httpClient.buildUrl(urls.ROTTENTOMATOES_API + path, paramsMap);
+		String response = httpClient.get(url);
 
 		JsonParser parser = new JsonParser();
 		JsonObject jsonResponse = parser.parse(response).getAsJsonObject();

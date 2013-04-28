@@ -1,7 +1,6 @@
 package it.jtomato.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import it.jtomato.JTomato;
 import it.jtomato.gson.AbridgedCast;
 import it.jtomato.gson.Movie;
@@ -216,12 +215,6 @@ public class JTomatoTest {
 		assertEquals(movies.get(0).rating.audienceRating, "Upright");
 		assertEquals(movies.get(0).releaseDate.theater, "2009-05-29");
 		assertEquals(movies.get(0).releaseDate.dvd, "2009-11-10");
-	}
-
-	@Test
-	public void getCurrentReleaseDvdsTest() {
-		fail();
-
 	}
 
 	@Test

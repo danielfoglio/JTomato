@@ -2,11 +2,7 @@ package it.jtomato.test.net;
 
 import it.jtomato.net.NetHttpClientInterface;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
-
-import org.apache.http.client.utils.URIBuilder;
 
 /**
  * HTTP Client mockup used for testing purposes
@@ -23,12 +19,11 @@ public class NetHttpClientMockUp implements NetHttpClientInterface {
 		this.response = response;
 	}
 
-	public String get(URI uri) {
+	public String get(String url) {
 		return response;
 	}
 
-	public URI buildURI(String scheme, String host, String path, HashMap<String, String> params) throws URISyntaxException {
-		URIBuilder builder = new URIBuilder();
-		return builder.build();
+	public String buildUrl(String path, HashMap<String, String> params){
+		return "";
 	}
 }

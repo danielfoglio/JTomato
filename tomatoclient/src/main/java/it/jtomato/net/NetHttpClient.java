@@ -1,16 +1,17 @@
 package it.jtomato.net;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 
@@ -21,12 +22,12 @@ import org.apache.http.util.EntityUtils;
  * 
  * @version 1.0
  **/
-public class NetHttpClient implements NetHttpClientInterface{
+public class NetHttpClient implements NetHttpClientInterface {
 
-	private final String scheme = "http";
+	private final String ENCODING = "utf-8";
 	private final String agent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
 
-	public String get(URI uri) {
+	public String get(String uri) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpProtocolParams.setUserAgent(httpclient.getParams(), agent);
 
@@ -37,13 +38,8 @@ public class NetHttpClient implements NetHttpClientInterface{
 			HttpEntity entity = response.getEntity();
 
 			if (entity != null) {
-				InputStream instream = entity.getContent();
-				try {
-					String responseContent = EntityUtils.toString(entity);
-					return responseContent;
-				} finally {
-					instream.close();
-				}
+				String responseContent = EntityUtils.toString(entity);
+				return responseContent;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,23 +47,16 @@ public class NetHttpClient implements NetHttpClientInterface{
 		return null;
 	}
 
-	public URI buildURI(String scheme, String host, String path, HashMap<String, String> params) throws URISyntaxException {
-		URIBuilder builder = new URIBuilder();
-		if (scheme == null) {
-			builder.setScheme(this.scheme);
-		} else {
-			builder.setScheme(scheme);
-		}
-		builder.setHost(host);
-		if (path != null) {
-			builder.setPath(path);
-		}
+	public String buildUrl(String url, HashMap<String, String> params) {
 		if (params != null) {
-			for (String param : params.keySet()) {
-				builder.setParameter(param, params.get(param));
+			List<NameValuePair> httpParams = new LinkedList<NameValuePair>();
+			for (String p : params.keySet()) {
+				httpParams.add(new BasicNameValuePair(p, String.valueOf(params.get(p))));
 			}
+			String paramString = URLEncodedUtils.format(httpParams, this.ENCODING);
+			url += "?" + paramString;
 		}
-		return builder.build();
+		System.out.println(url);
+		return "http://" + url;
 	}
-
 }
