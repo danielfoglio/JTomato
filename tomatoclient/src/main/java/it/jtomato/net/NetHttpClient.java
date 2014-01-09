@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.DecompressingHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpProtocolParams;
@@ -29,7 +30,7 @@ public class NetHttpClient implements NetHttpClientInterface {
 	private final String agent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
 
 	public String get(String uri) {
-		HttpClient httpclient = new DefaultHttpClient();
+		HttpClient httpclient = new DecompressingHttpClient(new DefaultHttpClient());
 		HttpProtocolParams.setUserAgent(httpclient.getParams(), agent);
 
 		HttpGet httpget = new HttpGet(uri);
